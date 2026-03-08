@@ -5,6 +5,8 @@ class TestSudoku(unittest.TestCase):
     
     def test_group(self):
         self.assertEqual(group([1,2,3,4], 2), [[1,2], [3,4]])
+        self.assertEqual(group([1,2,3,4,5,6,7,8,9], 3), 
+                         [[1,2,3], [4,5,6], [7,8,9]])
     
     def test_row_col_block(self):
         grid = read_sudoku('puzzle1.txt')
@@ -13,9 +15,9 @@ class TestSudoku(unittest.TestCase):
         self.assertEqual(len(get_block(grid, (0,0))), 9)
     
     def test_find_empty(self):
-        grid = [['1','2','3'], ['4','5','6'], ['7','8','9']]
+        grid = [['1','2','3','4','5','6','7','8','9'] for _ in range(9)]
         self.assertIsNone(find_empty(grid))
-        grid = [['1','2','.'], ['4','5','6'], ['7','8','9']]
+        grid[0][2] = '.'
         self.assertEqual(find_empty(grid), (0,2))
     
     def test_possible(self):

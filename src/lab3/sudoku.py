@@ -16,7 +16,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     return grid[pos[0]]
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
-    return [grid[i][pos[1]] for i in range(9)]
+    return [grid[i][pos[1]] for i in range(len(grid))]
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     row, col = pos
@@ -24,8 +24,8 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     return [grid[br + i][bc + j] for i in range(3) for j in range(3)]
 
 def find_empty(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
-    for i in range(9):
-        for j in range(9):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
             if grid[i][j] == '.':
                 return (i, j)
     return None
@@ -40,21 +40,27 @@ def possible(grid: List[List[str]], pos: Tuple[int, int], num: str) -> bool:
     return True
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
-    pos = find_empty(grid)
-    if not pos:
-        return [row[:] for row in grid]
+    grid_copy = [row[:] for row in grid]
     
-    for num in '123456789':
-        if possible(grid, pos, num):
-            grid[pos[0]][pos[1]] = num
-            if solve(grid):
-                return grid
-            grid[pos[0]][pos[1]] = '.'
+    def _solve(g):
+        pos = find_empty(g)
+        if not pos:
+            return True
+        
+        for num in '123456789':
+            if possible(g, pos, num):
+                g[pos[0]][pos[1]] = num
+                if _solve(g):
+                    return True
+                g[pos[0]][pos[1]] = '.'
+        return False
     
+    if _solve(grid_copy):
+        return grid_copy
     return None
 
 def check_solution(grid: List[List[str]]) -> bool:
-    if not grid:
+    if not grid or len(grid) != 9:
         return False
     
     for i in range(9):
