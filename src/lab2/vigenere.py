@@ -19,7 +19,6 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     
     return ciphertext
 
-
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     keyword = keyword.upper()
