@@ -1,41 +1,29 @@
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
-    ciphertext = ""
+    ciphertext = []
     keyword = keyword.upper()
-    key_index = 0
-    
-    for char in plaintext:
+    key_len = len(keyword)
+    for i, char in enumerate(plaintext):
         if char.isalpha():
-            shift = ord(keyword[key_index % len(keyword)]) - ord('A')
-            
+            shift = ord(keyword[i % key_len]) - ord('A')
             if char.isupper():
-                shifted = (ord(char) - ord('A') + shift) % 26 + ord('A')
+                ciphertext.append(chr((ord(char) - ord('A') + shift) % 26 + ord('A')))
             else:
-                shifted = (ord(char) - ord('a') + shift) % 26 + ord('a')
-            
-            ciphertext += chr(shifted)
-            key_index += 1
+                ciphertext.append(chr((ord(char) - ord('a') + shift) % 26 + ord('a')))
         else:
-            ciphertext += char
-    
-    return ciphertext
+            ciphertext.append(char)
+    return ''.join(ciphertext)
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
-    plaintext = ""
+    plaintext = []
     keyword = keyword.upper()
-    key_index = 0
-    
-    for char in ciphertext:
+    key_len = len(keyword)
+    for i, char in enumerate(ciphertext):
         if char.isalpha():
-            shift = ord(keyword[key_index % len(keyword)]) - ord('A')
-            
+            shift = ord(keyword[i % key_len]) - ord('A')
             if char.isupper():
-                shifted = (ord(char) - ord('A') - shift) % 26 + ord('A')
+                plaintext.append(chr((ord(char) - ord('A') - shift) % 26 + ord('A')))
             else:
-                shifted = (ord(char) - ord('a') - shift) % 26 + ord('a')
-            
-            plaintext += chr(shifted)
-            key_index += 1
+                plaintext.append(chr((ord(char) - ord('a') - shift) % 26 + ord('a')))
         else:
-            plaintext += char
-    
-    return plaintext
+            plaintext.append(char)
+    return ''.join(plaintext)
